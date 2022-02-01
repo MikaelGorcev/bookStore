@@ -3,7 +3,7 @@
       "module": "commonjs",
       "target": "ES6",
       "allowJs": true,
-      "sourceMap": true,
+      "sourceMap": false,
       "esModuleInterop": true,
       "jsx": "react"
     },
