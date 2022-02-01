@@ -7,7 +7,7 @@ class App extends React.Component{
       const { bookStServ}=this.props
         console.log(bookStServ.getBooks());
         return (
-            <div>hellow world</div>
+            <div>'hellow world'</div>
         )
     }
 };
