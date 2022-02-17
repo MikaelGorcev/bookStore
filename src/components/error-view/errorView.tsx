@@ -1,7 +1,8 @@
 import React from "react";
-
-export default class ErrorView extends React.Component{
-    render(){
-       return <div>ошибочка вышла</div>
-    }
+import "./error-view.css";
+const ErrorView =()=>{
+   return <div className="error">ошибочка вышла</div>
+    
 }
+
+export default ErrorView;

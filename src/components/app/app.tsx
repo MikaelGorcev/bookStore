@@ -1,25 +1,35 @@
 import React from "react";
-import withBookServ from "../hoc/with-book-serv";
+import Header from "../header/header";
+import {IBookStoreService} from "../../services/bookstore-services"
+import { Routes,Route} from "react-router-dom";
+import HomePage from "../pages/home-page/home-page";
+import CardPage from "../pages/card-page/card-page";
+import ShopHeader from "../shop-header/shop-header";
+type AppProps = {
+    bookStService:IBookStoreService
+    
+}
 
-class App extends React.Component{
+class App extends React.Component/*<AppProps>*/{
     
     render(){
-      const { bookStServ}=this.props
-        console.log(bookStServ.getBooks());
+    //   const {bookStService}=this.props;
+    //     console.log(bookStService.getBooks());
         return (
-            <div>'hellow world'</div>
+            <>
+                <div>Маленький "книжный"</div>
+                <ShopHeader/>
+                <Header/>
+                
+                <Routes>
+                    <Route path="/" element={<div>start page</div>}/>
+                    <Route path="/home" element={<HomePage/>}/>
+                    <Route path="/card" element={<CardPage/>}/>
+                </Routes>
+            </>
         )
     }
 };
 
-export default withBookServ()(App)
+export default App
 
-// const App =({bookStServ})=>{
-
-//     console.log(bookStServ.getBooks());
-
-//     return (
-//         <div>hellow world</div>
-//     )
-// }
-// export default withBookServ()(App)

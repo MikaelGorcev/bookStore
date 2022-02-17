@@ -1,4 +1,5 @@
 import React from "react";
-const {Provider:BookStProvider,Consumer:BookStConsumer}=React.createContext();
+import { IBookStoreService } from "../../services/bookstore-services";
+const {Provider:BookStProvider,Consumer:BookStConsumer}=React.createContext({} as IBookStoreService);
 
 export {BookStProvider,BookStConsumer};

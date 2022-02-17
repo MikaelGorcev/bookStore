@@ -1,0 +1,7 @@
+.containerForBook{
+    display: flex;
+    margin: 10px;
+}
+.descriptions{
+    margin-left: 10px;
+}
