@@ -2,26 +2,8 @@
 import {BookActionTypes,Iaction,} from "../actions/action"
 
 
+export type TypeBook = {id:number,title:string,author:string,price:number;pathToImg:string;}
 
- export  type TypeBook = {id:number,title:string,author:string,price:number;
-        pathToImg:string;}
-
-export type TypeState={
-    booklist:TypeBooklist,
-    orderList:TypeOrderList,
-   
-    
-}
-export type TypeBooklist={
-    books:TypeBook[];
-    loading: boolean;
-    error:null;
-}
-
-export type TypeOrderList={
-    cartItems:TItem[];
-    orderTotal:number;
-}
 
 export type TItem={
     id:number,
@@ -30,36 +12,48 @@ export type TItem={
     total:number
 }
 
+export type TypeInitialState = {
+    stateForBook:TypeStateForBook,
+    stateForOrder:TypeStateForOrder
+}
 
-const initialState : TypeState={
-    booklist:{
+export type TypeStateForBook={
+    books:TypeBook[];
+    loading: boolean;
+    error:null;
+}
+
+export type TypeStateForOrder={
+    cartItems:TItem[];
+    orderTotal:number;
+}
+type TypeUpdateSetItems={
+    (cartItems:TItem[],item:TItem,index:number):TItem[]
+}
+
+type TypeUpdateItem={
+    (book:TypeBook,findedItem:TItem):TItem
+}
+
+const initialState:TypeInitialState ={
+    stateForBook:{
         books:[],
         loading: true,
-        error:null,
+        error:null
     },
-    orderList:{
+    stateForOrder:{
         cartItems:[],
         orderTotal:0
     }
-    
 };
-// type TypeUpdateBookList = Omit<TypeState,"orderList">;
-// type TypeUpdateOrderList = Omit<TypeState,"booklist">;
-const updateBooklist=(state:TypeState,action)=>{
 
-    if (state === undefined) {
-        return {
-          books: [],
-          loading: true,
-          error: null
-        };
-      }
 
+
+const updateStateForBook=(state:TypeInitialState,action:Iaction)=>{
     switch(action.type){
-        
-        
         case BookActionTypes.BOOKS_ERROR:
             return{
+                
                 books:null,
                 loading:false,
                 error:action.payload,
@@ -67,44 +61,39 @@ const updateBooklist=(state:TypeState,action)=>{
 
         case BookActionTypes.BOOKS_REQUEST:
             return {
-                books:[],
+                
+                books:null,
                 loading:true,
                 error:null
             }
 
         case BookActionTypes.BOOKS_LOADED: 
             return {
+                
                 books:action.payload,
                 loading:false,
                 error:null
             };
-       default:return state.booklist    
+        default:return state.stateForBook;
     }
-
 }
-
-const updateOrderlist=(state:TypeState,action)=>{
-
+const updateStateForOrder=(state:TypeInitialState,action:Iaction)=>{
     switch(action.type){
-
-    case BookActionTypes.BOOK_ADD_TO_Bill:
-        console.log(state);
-        
-        return ourOrder(state,action,increaseItem,updateSetItems,action.payload);
-         
-    
-     case BookActionTypes.BOOK_DECREASE_FOR_Bill:
-         return ourOrder(state,action,decreaseItem,updateSetItems,action.payload);
+        case BookActionTypes.BOOK_ADD_TO_Bill:
+           return ourOrder(state,action,increaseItem,updateSetItems,);
+            
+       
+        case BookActionTypes.BOOK_DECREASE_FOR_Bill:
+            return ourOrder(state,action,decreaseItem,updateSetItems,);
 
 
-     case BookActionTypes.BOOK_DELETE_ORDER:
-        return ourOrder(state,action,resetCountItem,updateSetItems,action.payload)
+        case BookActionTypes.BOOK_DELETE_ORDER:
+           return ourOrder(state,action,resetCountItem,updateSetItems)
 
-    default:return state.orderList  
+        default:return state.stateForOrder;
     }
 }
 
-type TypeUpdateSetItems = {(cartItems:TItem[],item:TItem,index:number):TItem[]}
 
 const updateSetItems:TypeUpdateSetItems =(cartItems,item,index,)=>{
 
@@ -126,83 +115,67 @@ const updateSetItems:TypeUpdateSetItems =(cartItems,item,index,)=>{
 
       
  
-const decreaseItem=(book:TypeBook,findedItem={id:book.id,name:book.title,count:0,total:0}):TItem=>{
+const decreaseItem:TypeUpdateItem=(book,findedItem={id:book.id,name:book.title,count:0,total:0})=>{
    const {count,total}=findedItem;
        
-   return{   ...findedItem,
+   return{...findedItem,
               count: count-1,
               total: total-book.price
               }}       
 
 
-const increaseItem=(book:TypeBook,findedItem={id:book.id,name:book.title,count:0,total:0}):TItem=>{
+const increaseItem:TypeUpdateItem=(book,findedItem={id:book.id,name:book.title,count:0,total:0})=>{
     
-    
-    const {count,total}=findedItem;
-                           
+    const {id,name,count,total}=findedItem;
+               
                     
         return{
-            ...findedItem,
+             id,
+             name,
              count: count+1,
              total: total+book.price
          }
     
      }
 
-const resetCountItem=(book,findedItem:TItem)=>{
+const resetCountItem:TypeUpdateItem=(book,findedItem)=>{
     
         return{
-            ...findedItem,
-             count:0,
-             
+             ...findedItem,
+             count:0
          }
     
      }
-type TypeUpdateItem = {(book:TypeBook,findedItem:TItem):TItem}
 
-     const ourOrder =(state:TypeState,action,updateItem:TypeUpdateItem,updateSetItems:TypeUpdateSetItems,bookId)=>{
-                //const bookId=action.payload;//берет ИД из экшн креатора
-                const book = state.booklist.books.find((book)=>book.id===bookId); //находит нужную книгу из стэйта
-                console.log(book);
-                
-                
-                const itemIndex:number = state.orderList.cartItems.findIndex((item)=>{return item.id===bookId}); //находит её индекс
-                const findedItem:TItem = state.orderList.cartItems[itemIndex] //находит ее айтэм
-                
-                
-                const newItem=updateItem(book,findedItem)
-                
+
+
+const ourOrder =(state:TypeInitialState,action:Iaction,updateItem:TypeUpdateItem,updateSetItems:TypeUpdateSetItems,)=>{
     
-                 return{
-                    orderTotal:0,
-                    cartItems:updateSetItems(state.orderList.cartItems,newItem,itemIndex,)
-                }
-    }
-
+        const {stateForBook:{books},stateForOrder:{cartItems}}=state;
+        
+            const bookId=action.payload;//берет ИД из экшн креатора
+                    const book = books.find((book)=>book.id===bookId); //находит нужную книгу из стэйта
+                    const itemIndex:number = cartItems.findIndex((item)=>{return item.id===bookId}); //находит её индекс
+                    const findedItem:TItem = cartItems[itemIndex] //находит ее айтэм
+                    
+                    
+                    const newItem=updateItem(book,findedItem,)
+                    
+                    const total=updateSetItems(cartItems,newItem,itemIndex).reduce((total,item)=>{return total+=item.total},0)
+        
+                     return{
+                        orderTotal:total,
+                        cartItems:updateSetItems(cartItems,newItem,itemIndex,)
+                    }
+        }
 
 const reducer=(state=initialState,action:Iaction)=>{
 
-    switch(action.type){
-        case BookActionTypes.BOOKS_LOADED: 
-        case BookActionTypes.BOOKS_REQUEST:
-        case BookActionTypes.BOOKS_ERROR: 
-        return {
-            ...state,
-            bookList:updateBooklist(state,action),
+
+        return{
+            stateForBook:updateStateForBook(state,action),
+            stateForOrder:updateStateForOrder(state,action)
         }
-
-        case BookActionTypes.BOOK_ADD_TO_Bill:
-        case BookActionTypes.BOOK_DECREASE_FOR_Bill:
-        case BookActionTypes.BOOK_DELETE_ORDER:
-        return {
-            ...state,
-            orderList:updateOrderlist(state,action)
-        }
-        default: return state;
-    }
-
-
-   
- };
+};
 
 export default reducer;

@@ -1,0 +1,29 @@
+.app-container{
+    margin: -8px;
+    min-height: 100vh;
+    background-image:url(./../../pictures/library.jpg) ;
+    background-size:100% ;
+}
+/* .app-header{
+    background-color: chocolate;
+} */
+.substrate{
+    background: rgba(0, 0, 0, 0.5);
+    min-height: 100vh;
+    padding: 20px 0;
+}
+h1{
+    display: flex;
+    justify-content: space-around;
+}
+
+.app-wrapper{
+    transition: max-heigth 2s;
+    background: rgba(200, 150, 100, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    width: 500px;
+    max-height: fit-content; 
+    margin: 0 auto;
+}
+

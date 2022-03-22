@@ -1,0 +1,5 @@
+.book-list-view{
+    height: 470px;
+    overflow: auto;
+    overflow-x: hidden;
+}

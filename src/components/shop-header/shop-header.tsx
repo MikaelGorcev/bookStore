@@ -1,11 +1,34 @@
-import  React from 'react';
 
-const ShopHeader =(/*{countItems,total}*/)=>{
+import  React from 'react';
+import { connect } from 'react-redux';
+import{TypeStateForOrder} from "../../reducers/reducer";
+import "./shop-header.css"
+
+
+const ShopHeader =({items})=>{
+    
+    const resItem=items.reduce((acum,item)=>{
+        
+        return {count:acum.count+=item.count,total:acum.total+=item.total}
+        
+    },{count:0,total:0})
+    
+    
+    const{count,total}=resItem
     return(
-        <div>
-            <span>Количество книг 000{/*countItems*/}</span><span>на сумму 000{/*total*/}</span>
+        <div className='shop-header'>
+            <span>Количество книг {count},</span><span>на сумму {total}</span>
         </div>
     )
 }
 
-export default ShopHeader
+
+const mapStateToProps = ({stateForOrder:{cartItems,orderTotal}}:{stateForOrder:TypeStateForOrder})=>({
+    items:cartItems,
+    total:orderTotal
+})
+
+
+
+export default connect(mapStateToProps,{})(ShopHeader);
+

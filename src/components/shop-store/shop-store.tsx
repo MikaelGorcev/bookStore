@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { TItem, TypeOrderList } from "../../reducers/reducer";
+import { TItem, TypeStateForOrder } from "../../reducers/reducer";
 import React from "react";
 import { bookAdToBill, bookDecreaseForBill, deleteOrder } from "../../actions/action";
 import "./shop-store.css";
@@ -8,14 +8,15 @@ import "./shop-store.css";
 
 type TShopStore={
     items:TItem[], 
-    total:number, 
+    total:number,
     onIncrease:(id:number)=>void, 
     onDecrease:(id:number)=>void, 
     onDelete:(id:number)=>void
 }
 
-const ShopStore=({items, total, onIncrease, onDecrease, onDelete}:TShopStore)=>{
+const ShopStore=({items,total, onIncrease, onDecrease, onDelete}:TShopStore)=>{
 
+    
 
         const renderRow = (item:TItem,idx:number)=>{
             const {id,name,count,total}=item;
@@ -60,7 +61,9 @@ const ShopStore=({items, total, onIncrease, onDecrease, onDelete}:TShopStore)=>{
 
 
 
-const mapStateToProps = ({orderList:{cartItems,orderTotal}}:{orderList:TypeOrderList})=>({
+const mapStateToProps = ({stateForOrder:{cartItems,orderTotal}}:{stateForOrder:TypeStateForOrder})=>({
+    
+    
     items:cartItems,
     total:orderTotal
 })

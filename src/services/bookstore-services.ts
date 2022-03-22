@@ -10,8 +10,9 @@ export class BookStoreServices implements IBookStoreService {
 
     data=[
         {id:1, title:"Как сидя на диване стать миллиардером",author:'Евгений Фантазеров',price:14,pathToImg:b1},
-        {id:2, title:"Как есть всё и не жиреть",author:'Эдуард Поносов',price:42,pathToImg:b2},
+        {id:2, title:"Как есть всё и не жиреть",author:'Эдуард Пронеслов',price:42,pathToImg:b2},
         {id:3, title:"Как открыть свою контору",author:'Анатолий Шарашкин',price:22,pathToImg:b3},
+        // {id:4, title:"Как открыть свою контору",author:'Анатолий Шарашкин',price:22,pathToImg:b3},
     ]
 
     getBooks(){
