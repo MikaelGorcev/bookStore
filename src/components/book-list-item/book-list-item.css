@@ -1,0 +1,29 @@
+.containerForBook{
+    display: flex;
+    margin: 10px;
+}
+.containerForBook button{
+  padding: 5px;
+}
+.descriptions{
+    margin-left: 10px;
+}
+
+
+
+.animateImg.entered{
+    animation: animateOnPlace 1s forwards;
+}
+
+  @keyframes animateOnPlace {
+    0%{
+        
+      transform: translateX(-500px) rotate(0deg);
+      
+    }
+    100%{
+      transform: translateX(0px) rotate(360deg);
+     
+    }
+}
+
